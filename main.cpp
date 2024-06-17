@@ -1,12 +1,19 @@
 #include <iostream>
 #include <random>
 
+
+int num_ind = 1;
+
 int inov_id = 0;
+
+int layers = 3;
 
 int num_connections = 6;
 int input_neurons = 2;
-int hidden_neurons_A = 2;
+int hidden_neurons_A = 3;
 int output_neurons = 4;
+
+int shape[] = {input_neurons, hidden_neurons_A, output_neurons};
 
 
 struct position{
@@ -28,11 +35,30 @@ float random_float(int start=0, int end=1){
     return random_number;
 }
 
+class the_ai{
+    public:
+        std::vector<std::vector<std::vector<float>>> weights;
 
+    the_ai(){
+        for (int i = 0; i < layers-1; i++){
+            std::vector<std::vector<float>> layer;
+            for (int j = 0; j < shape[i]; j++){
+                std::vector<float> neuron;
+                for (int k = 0; k < shape[i+1]; k++){
+                    neuron.push_back(random_float());
+                }
+                layer.push_back(neuron);
+            }
+            weights.push_back(layer);
+        }
+    }
+
+};
 
 
 class individual{
     public:
+        the_ai brain;
         float fitness;
         unsigned short id;
         int dead = 0;
@@ -88,7 +114,67 @@ class individual{
 };
 
 int main(){
+    position food = position(50,50);
+
+    std::vector<individual> individuals;
+
+    // Create a vector of individuals
+    for (int i = 0; i < num_ind; i++) {
+        individuals.push_back(individual());
+    }
+
+    for (int i = 0; i < num_ind; i++) {
+        std::cout << "Individual " << i << " has position: " << individuals[i].pos.x << ", " << individuals[i].pos.y << std::endl;
+    }
+    bool not_found = true;
+    for (int i = 0; i < num_ind; i++) {
+        while(not_found){
+            if (individuals[i].pos.x == food.x && individuals[i].pos.y == food.y){
+                std::cout << "Individual " << i << " has found the food!" << std::endl;
+                not_found = false;
+            }
+            else if (individuals[i].pos.x < food.x && individuals[i].pos.y < food.y){
+                individuals[i].move(7);
+            }
+            else if (individuals[i].pos.x == food.x && individuals[i].pos.y < food.y){
+                individuals[i].move(6);
+            }
+            else if (individuals[i].pos.x > food.x && individuals[i].pos.y < food.y){
+                individuals[i].move(5);
+            }
+            else if (individuals[i].pos.x < food.x && individuals[i].pos.y == food.y){
+                individuals[i].move(4);
+            }
+            else if (individuals[i].pos.x > food.x && individuals[i].pos.y == food.y){
+                individuals[i].move(3);
+            }
+            else if (individuals[i].pos.x < food.x && individuals[i].pos.y > food.y){
+                individuals[i].move(2);
+            }
+            else if (individuals[i].pos.x == food.x && individuals[i].pos.y > food.y){
+                individuals[i].move(1);
+            }
+            else if (individuals[i].pos.x > food.x && individuals[i].pos.y > food.y){
+                individuals[i].move(0);
+            }
+        std::cout << "Individual " << i << " has position: " << individuals[i].pos.x << ", " << individuals[i].pos.y << std::endl;
+        }
+    }
     
+    for (int h = 0; h < num_ind; h++) {
+          // Print the value of weights of each connection
+            for (int i = 0; i < layers-1; i++) {
+                std::cout << "Layer " << i+1 << " weights:" << std::endl;
+                for (int j = 0; j < shape[i]; j++) {
+                    for (int k = 0; k < shape[i+1]; k++) {
+                        std::cout << "Connection " << j+1 << " to " << k+1 << ": " << individuals[h].brain.weights[i][j][k] << std::endl;
+                    }
+                }
+                std::cout << std::endl;
+            }
+       }
+    
+  
 
     return 0;
 }
