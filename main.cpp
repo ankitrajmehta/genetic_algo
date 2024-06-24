@@ -11,6 +11,7 @@ int main() {
     for (int gen = 0; gen < generations; ++gen) {
         ga.evolve(gen, step_per_gen);
     }
+    
     std::cout<<"best fitness: "<<ga.best<< " Gen: "<< ga.bestgen <<std::endl;
     return 0;
 }
