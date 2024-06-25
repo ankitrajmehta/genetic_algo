@@ -1,0 +1,16 @@
+## Current Selection critera:
+
+    ### For first 20 generation:
+            Fitness+=1 if individual is in the right side of map (x > 90) between steps 100 to 200
+            Fitness -= 1 if individual is still in the left side of map between steps 100 to 200
+
+    ### For Next 80 gen:
+            Fitness+=1 if individual is in the right side of map (x > 90) between steps 100 to 200
+            Fitness -= 1 if individual is still in the left side of map between steps 100 to 200
+            Fitness += 1 if individual is in the left side of map (x<10) between steps 300 to 400
+            Fitness -= 1 if individual is still in the right side of map between steps 300 to 400
+
+## Expected result:
+        First, up to 20th generation, fitness increases. At 21st generation, it sharply decreases. It takes a few generations to start getting positive fitness again.
+
+

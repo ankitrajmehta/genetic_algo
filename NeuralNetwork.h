@@ -5,7 +5,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
-
+#include <iostream>
 
 // Activation function
 inline double sigmoid(double x) {
@@ -20,6 +20,12 @@ inline double sigmoidDerivative(double x) {
 inline double relu(double x) {
     return x > 0 ? x : 0;
 }   
+
+inline double tanh(double x){
+    return (2/(1+exp(-2*x)))-1;
+}
+
+int con_num =0;
 
 class NeuralNetwork {
 public:
@@ -46,17 +52,21 @@ public:
     // }
 
     std::vector<double> feedForward(const std::vector<double>& inputs) {
+        //  if (inputs[4] > 0){
+        // std::cout<<inputs[1]<<"  "<< inputs[3]<<std::endl;} // checking if inputs are correct
+        // std::cout << "Length of inputs: " << inputs.size() << std::endl;}
         for (int i = 0; i < hiddenSize; ++i) {
             hiddenLayer[i] = 0.0;
             for (int j = 0; j < inputSize; ++j)
                 hiddenLayer[i] += inputs[j] * weightsInputHidden[j][i];
             // hiddenLayer[i] = sigmoid(hiddenLayer[i]);
+        
         }
         for (int i = 0; i < outputSize; ++i) {
             outputLayer[i] = 0.0;
             for (int j = 0; j < hiddenSize; ++j)
                 outputLayer[i] += hiddenLayer[j] * weightsHiddenOutput[j][i];
-            // outputLayer[i] = sigmoid(outputLayer[i]);
+             outputLayer[i] = tanh(outputLayer[i]);
         }
         return outputLayer;
     }
