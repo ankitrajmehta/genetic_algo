@@ -25,31 +25,33 @@ inline double tanh(double x){
     return (2/(1+exp(-2*x)))-1;
 }
 
-int con_num =0;
+const int NUM_OF_CON = 9;
 
 class NeuralNetwork {
 public:
     int inputSize, hiddenSize, outputSize;
     std::vector<double> hiddenLayer, outputLayer;
     std::vector<std::vector<double>> weightsInputHidden, weightsHiddenOutput;
+    int all_connections;
 
     NeuralNetwork(int inputSize, int hiddenSize, int outputSize)
         : inputSize(inputSize), hiddenSize(hiddenSize), outputSize(outputSize) {
+        all_connections = inputSize*hiddenSize + hiddenSize*outputSize;
         hiddenLayer.resize(hiddenSize);
         outputLayer.resize(outputSize);
         weightsInputHidden.resize(inputSize, std::vector<double>(hiddenSize));
         weightsHiddenOutput.resize(hiddenSize, std::vector<double>(outputSize));
-        // initializeWeights();
+        initializeWeights();
     }
 
-    // void initializeWeights() {
-    //     for (int i = 0; i < inputSize; ++i)
-    //         for (int j = 0; j < hiddenSize; ++j)
-    //             weightsInputHidden[i][j] = 0*((double)rand() / (RAND_MAX)) * 2 - 1; 
-    //     for (int i = 0; i < hiddenSize; ++i)
-    //         for (int j = 0; j < outputSize; ++j)
-    //             weightsHiddenOutput[i][j] = 0*((double)rand() / (RAND_MAX)) * 2 - 1;
-    // }
+    void initializeWeights() {
+        for (int i = 0; i < inputSize; ++i)
+            for (int j = 0; j < hiddenSize; ++j)
+                weightsInputHidden[i][j] = 0*((double)rand() / (RAND_MAX)) * 2 - 1; 
+        for (int i = 0; i < hiddenSize; ++i)
+            for (int j = 0; j < outputSize; ++j)
+                weightsHiddenOutput[i][j] = 0*((double)rand() / (RAND_MAX)) * 2 - 1;
+    }
 
     std::vector<double> feedForward(const std::vector<double>& inputs) {
         //  if (inputs[4] > 0){

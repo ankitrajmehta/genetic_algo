@@ -34,13 +34,19 @@ class Individual{
     public:
 
         std::vector<double> weights;
+        std::vector<int> active_connections = {0,1,3,13,15,13,15,13,15};
 
-        float fitness=-1000;
+        float fitness=0;
         unsigned short id;
         int dead = 0;
         
         position pos;
         position food;
+        int new_species;
+
+
+        std::vector<position> movement_history;
+        std::vector<float> fitness_history;
 
         int direction = 0; // 0 = up-left, 1 = up, 2 = up-right, 3 = left, 4 = right, 5 = down-left, 6 = down, 7 = down-right
 
@@ -48,10 +54,21 @@ class Individual{
             id++;
             pos = position(0,0);
             food = position(20,0);
+            new_species = 0;
         }
 
+        void clean(){
+            fitness = 0.0;
+            pos = position(50+0*random_int(),50+0*random_int());
+            direction = 0;
+            movement_history.clear();
+            fitness_history.clear();
+        }
+
+
         void move (std::vector<double>&  outputs){
-            direction=0;
+            movement_history.push_back(pos);
+            direction = 0;
             if (outputs[0] < -.5){;
                 direction++;
                 if (pos.x > 0)
