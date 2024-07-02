@@ -17,6 +17,7 @@ public:
     Individual best;
     int bestgen=0;
     int num_species = 1;
+    int species_id = 1;
 
     GeneticAlgorithm(int populationSize, double mutationRate, NeuralNetwork& nn)
         : populationSize(populationSize), mutationRate(mutationRate), nn(nn) {
@@ -47,7 +48,7 @@ public:
         // std::vector<double> inputs = {(double)ind.pos.x, (double) ind.food.x+5, (double)ind.pos.y, (double) ind.food.y+5, (double)(age/400.0) };
 
         //For moving right then left:
-        std::vector<double> inputs = {(double)ind.pos.x, (double) ind.pos.y, (double)(age/400.0)};
+        std::vector<double> inputs = {(double)ind.pos.x, (double) ind.pos.y, (double)(age/400.0), (double)1};
 
         std::vector<double> outputs = nn.feedForward(inputs);
         
@@ -114,6 +115,12 @@ public:
             }
         }
 
+        if (ind.pos.y<10 || ind.pos.y>90){
+            fitness-=1;
+        }
+
+        
+
 
         return fitness; // Minimize error
     }
@@ -124,31 +131,47 @@ public:
     // }
 
     Individual selectParent() {
+        // std::sort(population.begin(), population.end(), [](const Individual& a, const Individual& b) {
+        //     return a.fitness > b.fitness;
+        //     });
+
         std::sort(population.begin(), population.end(), [](const Individual& a, const Individual& b) {
+            if (a.fitness == b.fitness) {
+                return a.species_id < b.species_id;
+            }
             return a.fitness > b.fitness;
-            });
+        });
+
         return population[0]; // Elitism: always select the best
     }
 
 
 
     void mutate(Individual& ind) {
-
+        bool mutated = false;
+        ind.new_species--;
         for (int& con : ind.active_connections){
-            if ((((double)rand() / (RAND_MAX)) < mutationRate)){
+            if ((((double)rand() / (RAND_MAX)) < mutationRate) && ind.new_species < 1){
                 int new_con = random_int(0,nn.all_connections-1);
                 //check if new connection is already present in connections of individual. if not, then replace current con with new con
                 if (std::find(ind.active_connections.begin(), ind.active_connections.end(), new_con) == ind.active_connections.end()) 
                 {
                     ind.weights[con] = 0;
                     con = new_con;
-                    ind.weights[con] += ((double)rand() / (RAND_MAX)) * 2 - 1;}
-                    ind.new_species = 10;
+                    ind.weights[con] += ((double)rand() / (RAND_MAX)) * 2 - 1;
+                    ind.new_species = 5;
+                    mutated = true;
                 }
+            }
             if (((double)rand() / (RAND_MAX)) < mutationRate){
                 ind.weights[con] += ((double)rand() / (RAND_MAX)) * 2 - 1;}
         }
-        ind.new_species--;
+
+        if (mutated){
+            species_id++;
+            ind.species_id = species_id;
+        }
+
 
         std::sort(ind.active_connections.begin(), ind.active_connections.end());
 
@@ -172,25 +195,45 @@ public:
 
                     if (show == 1)
                         show = 0;
+                    else
+                        show = 1;
 
                 }
+
             }
         }
 
 
         std::vector<Individual> newPopulation;
         Individual parent = selectParent();
-        parent.clean();
-        newPopulation.push_back(parent);
+        
+        // Individual best_of_gen = best;
+        // best_of_gen.clean();
+        // newPopulation.push_back(best_of_gen);
 
-        // for (Individual& ind : population) {
-        //     if (ind.new_species>1){
-        //         ind.clean();
-        //         mutate(ind);
-        //         newPopulation.push_back(ind);
-        //         num_species++;
-        //     }
+        
+        // while (newPopulation.size() < populationSize/10) {
+        //     Individual offspring = parent;
+        //     offspring.clean();
+        //     offspring.new_species = 0;
+        //     mutate(offspring);
+        //     newPopulation.push_back(offspring);
         // }
+
+        for (Individual& ind : population) {
+            if (ind.new_species>1 && newPopulation.size() < populationSize*0.9){
+                num_species++;
+                Individual old = ind;
+                old.clean();
+                mutate(old);
+                newPopulation.push_back(old);
+            }
+
+            if (ind.fitness > best.fitness){
+                best = ind;
+                bestgen = gen;
+            }
+        }
 
 
         while (newPopulation.size() < populationSize) {
@@ -204,12 +247,9 @@ public:
  
 
         std::cout << "Generation " << gen << " Best Fitness: " << population[0].fitness << std::endl;
-        std::cout << "With pos " << population[0].pos.x<< ", " << population[0].pos.y << ", direction: " << population[0].direction<< " num of species "<< num_species<<std::endl;
+        std::cout << "With pos " << population[0].pos.x<< ", " << population[0].pos.y << ", direction: " << population[0].direction<< " num of species "<< num_species<< " Id:"<< population[0].species_id<<" Created age: "<<population[0].new_species <<std::endl;
 
-        if (population[0].fitness > best.fitness){
-            best = population[0];
-            bestgen = gen;
-        }
+
 
         population = newPopulation;
 

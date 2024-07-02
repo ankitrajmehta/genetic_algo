@@ -34,7 +34,7 @@ class Individual{
     public:
 
         std::vector<double> weights;
-        std::vector<int> active_connections = {0,1,3,13,15,13,15,13,15};
+        std::vector<int> active_connections = {0,1,3,6,13,18};
 
         float fitness=0;
         unsigned short id;
@@ -43,6 +43,7 @@ class Individual{
         position pos;
         position food;
         int new_species;
+        int species_id = 1;
 
 
         std::vector<position> movement_history;
@@ -55,6 +56,7 @@ class Individual{
             pos = position(0,0);
             food = position(20,0);
             new_species = 0;
+            
         }
 
         void clean(){
