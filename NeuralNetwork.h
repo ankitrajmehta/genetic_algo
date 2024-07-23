@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <algorithm> 
 
 // Activation function
 inline double sigmoid(double x) {
@@ -25,7 +26,7 @@ inline double tanh(double x){
     return (2/(1+exp(-2*x)))-1;
 }
 
-const int NUM_OF_CON = 9;
+const int NUM_OF_CON =6;
 
 class NeuralNetwork {
 public:
@@ -34,6 +35,27 @@ public:
     std::vector<std::vector<double>> weightsInputHidden, weightsHiddenOutput;
     int all_connections;
 
+    std::vector<int> create_random_array() {
+        std::vector<int> random_array;
+        random_array.reserve(NUM_OF_CON); 
+        int lower_limit = 0;
+        int upper_limit = inputSize*hiddenSize + hiddenSize*outputSize;
+
+
+        for (int i = 0; i < NUM_OF_CON; i++) {
+            int random_number = lower_limit + (std::rand() % (upper_limit - lower_limit + 1));
+            if (std::find(random_array.begin(), random_array.end(), random_number) == random_array.end()) 
+            {
+                random_array.push_back(random_number);
+            }
+            else {
+                i--;
+            }
+        }
+
+        return random_array;
+    }
+
     NeuralNetwork(int inputSize, int hiddenSize, int outputSize)
         : inputSize(inputSize), hiddenSize(hiddenSize), outputSize(outputSize) {
         all_connections = inputSize*hiddenSize + hiddenSize*outputSize;
@@ -41,7 +63,7 @@ public:
         outputLayer.resize(outputSize);
         weightsInputHidden.resize(inputSize, std::vector<double>(hiddenSize));
         weightsHiddenOutput.resize(hiddenSize, std::vector<double>(outputSize));
-        initializeWeights();
+        // initializeWeights();
     }
 
     void initializeWeights() {
