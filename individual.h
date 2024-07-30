@@ -1,3 +1,6 @@
+#ifndef INDIVIDUAL_H
+#define INDIVIDUAL_H
+
 #include <iostream>
 #include "NeuralNetwork.h"
 
@@ -29,7 +32,21 @@ int id = 0;
 const int MAP_X = 100;
 const int MAP_Y = 100;
 
+position food_array[5] = {
+    position(0, 5),
+    position(20, 20),
+    position(33, 33),
+    position(66, 78),
+    position(22, 78),
+    
+};
 
+void randomizeFoodPositions() {
+    for (int i = 0; i < 5; i++) {
+        food_array[i].x = random_int(0,80);
+        food_array[i].y = random_int(0,80);
+    }
+}
 class Individual{
     public:
 
@@ -48,6 +65,7 @@ class Individual{
 
 
         std::vector<position> movement_history;
+        std::vector<position> food_history;
         std::vector<float> fitness_history;
 
         int direction = 0; // 0 = up-left, 1 = up, 2 = up-right, 3 = left, 4 = right, 5 = down-left, 6 = down, 7 = down-right
@@ -63,17 +81,20 @@ class Individual{
 
         void clean(){
             fitness = 0.0;
-            pos = position(0*random_int(),0*random_int());
-            food = position(20,20);
+            pos = position(random_int(),random_int());
+            food = position(random_int(0,80),random_int(0,80));
             food_dir = 0;//0->top-left,1->top,2->top-right,3->left,4->right,5->bottom-left,6->bottom,7->bottom-right
             direction = 0;
             movement_history.clear();
             fitness_history.clear();
+            food_history.clear();
         }
 
 
         void move (std::vector<double>&  outputs){
             movement_history.push_back(pos);
+
+            food_history.push_back(food);
             direction = 0;
             if (outputs[0] < -.5){;
                 direction++;
@@ -153,3 +174,4 @@ class Individual{
 
         
 };
+#endif
