@@ -7,7 +7,7 @@
 #include <iostream>
 #include "NeuralNetwork.h"
 #include "individual.h"
-#include "Renderer.h"
+//#include "Renderer.h"
 
 class GeneticAlgorithm {
 public:
@@ -288,7 +288,8 @@ public:
         ind.new_species--;
         for (int& con : ind.active_connections){
             if ((((double)rand() / (RAND_MAX)) < mutationRate) && ind.new_species < 1){
-                int new_con = random_int(0,nn.all_connections-1);
+                int new_con = random_int(0, nn.get_all_connections() - 1);
+
                 //check if new connection is already present in connections of individual. if not, then replace current con with new con
                 if (std::find(ind.active_connections.begin(), ind.active_connections.end(), new_con) == ind.active_connections.end()) 
                 {

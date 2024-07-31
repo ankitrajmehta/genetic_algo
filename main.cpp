@@ -1,26 +1,26 @@
 #include "NeuralNetwork.h"
 #include "GeneticAlgorithm.h"
-#include "Renderer.h"
-#include <SDL2/SDL.h>
+//#include "Renderer.h"
+//#include <SDL2/SDL.h>
 int main(int argc, char* args[]) {
     srand(static_cast<unsigned>(time(0)));
-    NeuralNetwork nn(5, 4, 2);
+    FeedForwardNetwork nn(5, 4, 2);
     int populationSize = 500;
     GeneticAlgorithm ga(populationSize, 0.15, nn);
     
     int generations = 100;
     int step_per_gen = 400;
-    SDL_Window* window=nullptr;
+    /*SDL_Window* window=nullptr;
         SDL_Renderer* renderer=nullptr;
         SDL_Init(SDL_INIT_VIDEO);
         SDL_CreateWindowAndRenderer(100*8, 100*8+300, 0, &window, &renderer);
         SDL_RenderSetScale(renderer, 8, 8);
-        SDL_SetRenderDrawColor(renderer,0,0,0,255);
+        SDL_SetRenderDrawColor(renderer,0,0,0,255);*/
     for (int gen = 0; gen < generations; ++gen) {
         randomizeFoodPositions();
         ga.evolve(gen, step_per_gen);
-        Rend kk(ga.population);
-        kk.draw2(renderer,gen);
+        /*Rend kk(ga.population);
+        kk.draw2(renderer,gen);*/
         //for(int ind=0;ind<1;ind+=30){
             //kk.draw(renderer);
         // SDL_SetRenderDrawColor(renderer,0,0,0,255);
