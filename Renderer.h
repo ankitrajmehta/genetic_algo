@@ -24,18 +24,14 @@ class Rend{
         
         SDL_SetRenderDrawColor(renderer,0,255,255,255);
         //SDL_RenderClear(renderer);
-        for(int ind=0;ind<100 && gen%5==0;ind+=10){    
+        for(int step=0;step<400;step++){    
         SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
-        
-            for(int step=0;step<400;step++){
-
-
-                if(step==0){
+        if(step>=0 && step<100){
                 SDL_SetRenderDrawColor(renderer,0,0,0,255);
                 
                 SDL_RenderClear(renderer);
                 
-                surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/1st.jpg");
+                surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/2nd.png");
                 
                 SDL_Texture* ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
                 
@@ -44,12 +40,12 @@ class Rend{
                 SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
                 }
 
-                else if(step==100 ){
+                else if(step>=100 && step<200){
                     SDL_SetRenderDrawColor(renderer,0,0,0,255);
                     
                     SDL_RenderClear(renderer);
                     
-                    surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/2nd.jpg");
+                    surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/1st.png");
                     
                     SDL_Texture* ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
                     
@@ -57,34 +53,55 @@ class Rend{
                     
                     SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
                 }
-                else if(step==300){
+                else if(step>=200 && step<300){
                     SDL_SetRenderDrawColor(renderer,0,0,0,255);
                     
                     SDL_RenderClear(renderer);
                     
-                    surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/3rd.jpg");
+                    surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/2nd.png");
                     
                     SDL_Texture* ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
                     
                     SDL_RenderCopy(renderer,ourjpg,NULL,NULL);
                     
                     SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
+                }
+                else if(step>=300 && step<400){
+                    SDL_SetRenderDrawColor(renderer,0,0,0,255);
+                    
+                    SDL_RenderClear(renderer);
+                    
+                    surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/3rd.png");
+                    
+                    SDL_Texture* ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
+                    
+                    SDL_RenderCopy(renderer,ourjpg,NULL,NULL);
+                    
+                    SDL_SetRenderDrawColor(renderer,255,0,random_int(0,255),255);
 
                 }
 
+            for(int ind=0;ind<20;ind++){
+
+
+                
 
 
                 SDL_RenderDrawPoint(renderer,population[ind].movement_history[step].x,population[ind].movement_history[step].y);
-                if(step%20==0){SDL_RenderPresent(renderer); SDL_Delay(100);}
+                
                 
                
                 //std::cout<<"SP"<<step<<"turn"<<ind<<"x:"<<population[ind].movement_history[step].x<<"y:"<<population[ind].movement_history[step].y<<std::endl;
             }
+            SDL_RenderPresent(renderer);
             //SDL_RenderPresent(renderer);
-        
+         SDL_Delay(50);
         }
+        
         SDL_SetRenderDrawColor(renderer,0,0,0,255);
+        
         SDL_RenderClear(renderer);
+        
         }
     void draw2(SDL_Renderer* renderer,int gen,int health){
         std::cout<<"Health"<<health<<std::endl;
