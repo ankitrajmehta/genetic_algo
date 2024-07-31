@@ -8,12 +8,14 @@
 #include "NeuralNetwork.h"
 #include "individual.h"
 #include <SDL2/SDL.h>
-#include <SDL2/Sdl_Rect.h>
+#include <SDL2/SDL_rect.h>
+
+template <typename T>
 class Rend{
     public:
-    std::vector<Individual>& population;
+    std::vector<T>& population;
     
-    Rend(std::vector<Individual>& pop):population(pop){};
+    Rend(std::vector<T>& pop):population(pop){};
     void draw(SDL_Renderer* renderer,int gen){
         SDL_SetRenderDrawColor(renderer,0,255,255,255);
         //SDL_RenderClear(renderer);
@@ -40,8 +42,8 @@ class Rend{
     
         SDL_SetRenderDrawColor(renderer,0,0,0,255);
         SDL_RenderClear(renderer);
-        SDL_SetRenderDrawColor(renderer,0,255,255,255);
-        SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
+        //SDL_SetRenderDrawColor(renderer,0,255,255,255);
+        //SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
         
             for(int step=0;step<400 && gen>=6 && gen%10==0;step++){
                 //SDL_RenderDrawPoint(renderer,population[0].movement_history[step].x,population[0].movement_history[step].y);
@@ -49,7 +51,7 @@ class Rend{
                 rect.y = population[0].food_history[step].y;
                 SDL_SetRenderDrawColor(renderer,150,0,0,50);
                 SDL_RenderFillRect(renderer,&rect);
-                SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
+                SDL_SetRenderDrawColor(renderer,0,255,255,255);
                 for(int ind=0;ind<20;ind++){
                     SDL_RenderDrawPoint(renderer,population[ind].movement_history[step].x,population[ind].movement_history[step].y);
                 }

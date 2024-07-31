@@ -9,13 +9,14 @@
 #include "individual.h"
 #include "Renderer.h"
 
+template <typename T>
 class GeneticAlgorithm {
 public:
     int populationSize;
     double mutationRate;
     NeuralNetwork& nn;
-    std::vector<Individual> population;
-    Individual best;
+    std::vector<T> population;
+    T best;
     int bestgen=0;
     int num_species = 1;
     int species_id = 1;
@@ -28,7 +29,7 @@ public:
     void initializePopulation() {
         std::vector<int> active_connections = nn.create_random_array();
         for (int i = 0; i < populationSize; ++i) {
-            Individual ind;
+            T ind;
             ind.weights = nn.getWeights();
             ind.active_connections = active_connections;
             for (double& weight : ind.weights){
@@ -42,7 +43,7 @@ public:
         best.fitness = -1000; // setting a lower limit for comparison
     }
 
-    double fitnessFunction(Individual& ind,int show, int age, int gen) {
+    double fitnessFunction(T& ind,int show, int age, int gen) {
         nn.setWeights(ind.weights);
         // For Chasing food:
        // std::vector<double> inputs = {(double)ind.pos.x - (double) ind.food.x, (double)ind.pos.y - (double) ind.food.y, (double)(age/400.0) };
@@ -261,17 +262,10 @@ public:
         return fitness; // Minimize error
     }
 
-    // void evaluateFitness() {
-    //     for (Individual& ind : population)
-    //         ind.fitness += fitnessFunction(ind);
-    // }
 
-    Individual selectParent() {
-        // std::sort(population.begin(), population.end(), [](const Individual& a, const Individual& b) {
-        //     return a.fitness > b.fitness;
-        //     });
+    T selectParent() {
 
-        std::sort(population.begin(), population.end(), [](const Individual& a, const Individual& b) {
+        std::sort(population.begin(), population.end(), [](const T& a, const T& b) {
             if (a.fitness == b.fitness) {
                 return a.species_id < b.species_id;
             }
@@ -283,7 +277,7 @@ public:
 
 
 
-    void mutate(Individual& ind) {
+    void mutate(T& ind) {
         bool mutated = false;
         ind.new_species--;
         for (int& con : ind.active_connections){
@@ -324,7 +318,7 @@ public:
         int show = 1;
         for (int i = 0; i < steps_per_gen; ++i){
 
-            for (Individual& ind : population){
+            for (T& ind : population){
                 if (ind.dead == 0){
                     ind.fitness += fitnessFunction(ind,show, i,gen);
                     ind.fitness_history.push_back(ind.fitness);
@@ -340,8 +334,8 @@ public:
         }
 
 
-        std::vector<Individual> newPopulation;
-        Individual parent = selectParent();
+        std::vector<T> newPopulation;
+        T parent = selectParent();
         
         // Individual best_of_gen = best;
         // best_of_gen.clean();
@@ -363,10 +357,10 @@ public:
         // conserve_parent.new_species = 0;
         // newPopulation.push_back(conserve_parent);
 
-        for (Individual& ind : population) {
+        for (T& ind : population) {
             if (ind.new_species>1 && newPopulation.size() < populationSize*0.9){
                 num_species++;
-                Individual old = ind;
+                T old = ind;
                 old.clean();
                 mutate(old);
                 newPopulation.push_back(old);
@@ -380,7 +374,7 @@ public:
 
 
         while (newPopulation.size() < populationSize) {
-            Individual offspring = parent;
+            T offspring = parent;
             offspring.clean();
             offspring.new_species = 0;
             mutate(offspring);
