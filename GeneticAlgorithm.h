@@ -49,7 +49,7 @@ public:
        // std::vector<double> inputs = {(double)ind.pos.x - (double) ind.food.x, (double)ind.pos.y - (double) ind.food.y, (double)(age/400.0) };
 
         //For Food box:
-        std::vector<double> inputs = {(double)ind.pos.x, (double) ind.food.x+5, (double)ind.pos.y, (double) ind.food.y+5, (double)(age/400.0) };
+        std::vector<double> inputs = {(double)ind.pos.x- (double) ind.food.x+5, (double)ind.pos.y- (double) ind.food.y+5, (double)(age/400.0),1.0f,1.0f };
 
         //For moving right then left:
         //std::vector<double> inputs = {(double)ind.pos.x, (double) ind.pos.y, (double)(age/400.0), (double)1};
