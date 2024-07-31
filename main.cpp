@@ -5,9 +5,9 @@
 #include<SDL2/SDL_image.h>
 int main(int argc, char* args[]) {
     srand(static_cast<unsigned>(time(0)));
-    NeuralNetwork nn(5, 4, 2);
-    int populationSize = 500;
-    GeneticAlgorithm<foodchaser> ga(populationSize, 0.15, nn);
+    NeuralNetwork nn(4, 4, 2);
+    int populationSize = 300;
+    GeneticAlgorithm<foodchaser> ga(populationSize, 0.25, nn);
     
     int generations = 30;
     int step_per_gen = 400;
@@ -23,7 +23,7 @@ int main(int argc, char* args[]) {
         randomizeFoodPositions();
         ga.evolve(gen, step_per_gen);
         Rend<foodchaser> kk(ga.population);
-        kk.draw2(renderer,gen,ga.population[0].fitness_history[399]);
+       kk.draw2(renderer,gen,ga.population[0].fitness_history[399]);
         //for(int ind=0;ind<1;ind+=30){
             //kk.draw(renderer);
         // SDL_SetRenderDrawColor(renderer,0,0,0,255);
@@ -42,6 +42,8 @@ int main(int argc, char* args[]) {
         
     
     }
+
+
 
     std::cout<<"best fitness: "<<ga.best.fitness<< " Gen: "<< ga.bestgen << " Id: "<<ga.best.species_id<<std::endl;
     std::cout<<"Weights shape: " << ga.best.weights.size() << std::endl;
