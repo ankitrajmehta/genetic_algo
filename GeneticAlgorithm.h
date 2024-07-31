@@ -47,10 +47,10 @@ public:
        // std::vector<double> inputs = {(double)ind.pos.x - (double) ind.food.x, (double)ind.pos.y - (double) ind.food.y, (double)(age/400.0) };
 
         //For Food box:
-        // std::vector<double> inputs = {(double)ind.pos.x, (double) ind.food.x+5, (double)ind.pos.y, (double) ind.food.y+5, (double)(age/400.0) };
+         std::vector<double> inputs = {(double)ind.pos.x, (double) ind.food.x+5, (double)ind.pos.y, (double) ind.food.y+5, (double)(age/400.0) };
 
         //For moving right then left:
-        std::vector<double> inputs = {(double)ind.pos.x, (double) ind.pos.y, (double)(age/400.0), (double)1};
+        //std::vector<double> inputs = {(double)ind.pos.x, (double) ind.pos.y, (double)(age/400.0), (double)1};
 
         //For running away from box;
         //std::vector<double> inputs = {(double)ind.pos.x, (double) ind.food.x+5, (double)ind.pos.y, (double) ind.food.y+5, (double)(1)};
@@ -79,27 +79,32 @@ public:
 
         
 
-        /*//SELECTION CRITERIA: Make a box of 10x10 from the food into which the individual should end up
-        if (age%10 == 0)
+        //SELECTION CRITERIA: Make a box of 10x10 from the food into which the individual should end up
+        if (age%80 == 0)
             {if (ind.pos.x < ind.food.x || ind.pos.y < ind.food.y || ind.pos.x > ind.food.x + 10 || ind.pos.y > ind.food.y + 10)
                 fitness+= 0;
             else
-                {fitness -= 5;}
+                {fitness += 5;}
             }
 
+        
+            ind.food.x = food_array[age/80].x;
+            ind.food.y = food_array[age/80].y;
+        
+
                 
-        if (age%30 == 0){
-            int foodRange = 30;
-            int min = 0;
-            // if (age > 200)
-            //     {min = 10;}
-            int minX = std::max(min, ind.pos.x - foodRange);
-            int maxX = std::min(MAP_X-foodRange+1, ind.pos.x + foodRange);
-            int minY = std::max(min, ind.pos.y - foodRange);
-            int maxY = std::min(MAP_Y-foodRange+1, ind.pos.y + foodRange);
-            ind.food.x = random_int(minX, maxX);  // position of the food
-            ind.food.y = random_int(minY, maxY);  // position of the food
-        } */
+        // if (age%30 == 0){
+        //     int foodRange = 90;
+        //     int min = 0;
+        //     // if (age > 200)
+        //     //     {min = 10;}
+        //     int minX = std::max(min, ind.pos.x - foodRange);
+        //     int maxX = std::min(MAP_X-foodRange+1, ind.pos.x + foodRange);
+        //     int minY = std::max(min, ind.pos.y - foodRange);
+        //     int maxY = std::min(MAP_Y-foodRange+1, ind.pos.y + foodRange);
+        //     ind.food.x = random_int(minX, maxX);  // position of the food
+        //     ind.food.y = random_int(minY, maxY);  // position of the food
+        // } 
         
 
        /* //SELECTION CRITERIA: To run away from food box of 10x10
@@ -230,7 +235,7 @@ public:
 
 
 
-       //SELECTION CRITERIA: Makes individual move towards right for 100 to 200 gens,then back to left for last 100 gen.
+       /*//SELECTION CRITERIA: Makes individual move towards right for 100 to 200 gens,then back to left for last 100 gen.
         if (age>300){
             if(ind.pos.x <10){
                 fitness+=1;
@@ -249,9 +254,9 @@ public:
             }
         }
 
-        if (ind.pos.y<10 || ind.pos.y>90 ){
-            fitness-=1;
-        }
+        // if (ind.pos.y<10 || ind.pos.y>90 ){
+        //     fitness-=1;
+        // }*/
 
         
 
@@ -320,6 +325,8 @@ public:
         num_species = 1;
 
         int show = 1;
+
+
         for (int i = 0; i < steps_per_gen; ++i){
 
             for (Individual& ind : population){
