@@ -43,16 +43,78 @@ public:
         best.fitness = -1000; // setting a lower limit for comparison
     }
 
+    
+    double fitnessFunction2(foodchaser& ind, int show, int age, int gen){ 
+        nn.setWeights(ind.weights);
+
+        //For Food box:
+        std::vector<double> inputs = {(double)ind.pos.x- (double) ind.food.x+5, (double)ind.pos.y- (double) ind.food.y+5,1,1, (double)(age/400.0) };
+        std::vector<double> outputs = nn.feedForward(inputs);
+        ind.move(outputs);
+        double fitness = 0.0;
+
+            if (age%50 == 0){
+                {if (ind.pos.x < ind.food.x || ind.pos.y < ind.food.y || ind.pos.x > ind.food.x + 10 || ind.pos.y > ind.food.y + 10)
+                    fitness-= 5;
+                else
+                    {fitness += 5;}
+                }
+            }
+
+        
+
+            ind.food.x = food_array[age/100].x;
+            ind.food.y = food_array[age/100].y;
+
+        return fitness; // Minimize error
+
+    }
+
+    
+    double fitnessFunction2(rightleft& ind, int show, int age, int gen){ 
+        nn.setWeights(ind.weights);
+        //For moving right then left:
+        std::vector<double> inputs = {(double)ind.pos.x, (double) ind.pos.y, (double)(age/400.0), (double)1};
+         std::vector<double> outputs = nn.feedForward(inputs);
+        ind.move(outputs);
+        double fitness = 0.0;
+
+        if (age>300){
+            if(ind.pos.x <10){
+                fitness+=1;
+            }
+            if (ind.pos.x>49){
+                fitness-=1;
+            }
+        }
+
+        else if(age> 100 && age < 200){
+            if(ind.pos.x > 90){
+                fitness+=1;
+            }
+            if (ind.pos.x < 49){
+                fitness-=1;
+            }
+        }
+
+        if (ind.pos.y<10 || ind.pos.y>90 ){
+            fitness-=1;
+        }
+
+        return fitness; // Minimize error
+
+    }
+
     double fitnessFunction(T& ind,int show, int age, int gen) {
         nn.setWeights(ind.weights);
         // For Chasing food:
        // std::vector<double> inputs = {(double)ind.pos.x - (double) ind.food.x, (double)ind.pos.y - (double) ind.food.y, (double)(age/400.0) };
 
         //For Food box:
-        std::vector<double> inputs = {(double)ind.pos.x, (double) ind.food.x+5, (double)ind.pos.y, (double) ind.food.y+5, (double)(age/400.0) };
+       // std::vector<double> inputs = {(double)ind.pos.x, (double) ind.food.x+5, (double)ind.pos.y, (double) ind.food.y+5, (double)(age/400.0) };
 
         //For moving right then left:
-        //std::vector<double> inputs = {(double)ind.pos.x, (double) ind.pos.y, (double)(age/400.0), (double)1};
+        std::vector<double> inputs = {(double)ind.pos.x, (double) ind.pos.y, (double)(age/400.0), (double)1};
 
         //For running away from box;
         //std::vector<double> inputs = {(double)ind.pos.x, (double) ind.food.x+5, (double)ind.pos.y, (double) ind.food.y+5, (double)(1)};
@@ -82,7 +144,7 @@ public:
         
 
         //SELECTION CRITERIA: Make a box of 10x10 from the food into which the individual should end up
-        if (age%50 == 0)
+       /* if (age%50 == 0)
             {if (ind.pos.x < ind.food.x || ind.pos.y < ind.food.y || ind.pos.x > ind.food.x + 10 || ind.pos.y > ind.food.y + 10)
                 fitness-= 5;
             else
@@ -90,7 +152,7 @@ public:
             }
 
             ind.food.x = food_array[age/100].x;
-            ind.food.y = food_array[age/100].y;
+            ind.food.y = food_array[age/100].y;*/
         // if (age%30 == 0){
         //     int foodRange = 30;
         //     int min = 0;
@@ -234,7 +296,7 @@ public:
 
 
        //SELECTION CRITERIA: Makes individual move towards right for 100 to 200 gens,then back to left for last 100 gen.
-        /*if (age>300){
+        if (age>300){
             if(ind.pos.x <10){
                 fitness+=1;
             }
@@ -254,7 +316,7 @@ public:
 
         if (ind.pos.y<10 || ind.pos.y>90 ){
             fitness-=1;
-        }*/
+        }
 
         
 
@@ -352,10 +414,10 @@ public:
 
 
         // To conserve the best parent of the generation
-        // Individual conserve_parent = parent;
-        // conserve_parent.clean();
-        // conserve_parent.new_species = 0;
-        // newPopulation.push_back(conserve_parent);
+        T conserve_parent = parent;
+        conserve_parent.clean();
+        conserve_parent.new_species = 0;
+        newPopulation.push_back(conserve_parent);
 
         for (T& ind : population) {
             if (ind.new_species>1 && newPopulation.size() < populationSize*0.9){
@@ -385,9 +447,7 @@ public:
 
         std::cout << "Generation " << gen << " Best Fitness: " << population[0].fitness << std::endl;
         std::cout << "With pos " << population[0].pos.x<< ", " << population[0].pos.y << ", direction: " << population[0].direction<< " num of species "<< num_species<< " Id:"<< population[0].species_id<<" Created age: "<<population[0].new_species <<std::endl;
-        std::cout << "Food at: " << population[0].food.x <<" " << population[0].food.y << std::endl;
-
-
+   
 
         population = newPopulation;
 

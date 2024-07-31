@@ -19,7 +19,7 @@ class Rend{
     void draw(SDL_Renderer* renderer,int gen){
         SDL_SetRenderDrawColor(renderer,0,255,255,255);
         //SDL_RenderClear(renderer);
-        for(int ind=400;ind>=0 && gen%5==0;ind-=40){    
+        for(int ind=0;ind<100 && gen%5==0;ind+=10){    
         SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
         
             for(int step=0;step<400;step++){
