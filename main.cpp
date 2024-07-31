@@ -3,13 +3,14 @@
 #include "Renderer.h"
 #include <SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
+
 int main(int argc, char* args[]) {
     srand(static_cast<unsigned>(time(0)));
-    NeuralNetwork nn(4, 4, 2);
-    int populationSize = 300;
-    GeneticAlgorithm<rightleft> ga(populationSize, 0.15, nn);
+    NeuralNetwork nn(5, 4, 2);
+    int populationSize = 500;
+    GeneticAlgorithm<foodchaser> ga(populationSize, 0.15, nn);
     
-    int generations = 50;
+    int generations = 30;
     int step_per_gen = 400;
 
     SDL_Window* window=nullptr;
@@ -18,30 +19,17 @@ int main(int argc, char* args[]) {
         SDL_CreateWindowAndRenderer(100*8, 100*8, 0, &window, &renderer);
         SDL_RenderSetScale(renderer, 8, 8);
         SDL_SetRenderDrawColor(renderer,0,0,0,255);
-        
     for (int gen = 0; gen < generations; ++gen) {
         randomizeFoodPositions();
         ga.evolve(gen, step_per_gen);
-        Rend<rightleft> kk(ga.population);
-       if(gen%20==0){kk.draw(renderer,gen);}
-        //for(int ind=0;ind<1;ind+=30){
-            //kk.draw(renderer);
-        // SDL_SetRenderDrawColor(renderer,0,0,0,255);
-        // SDL_RenderClear(renderer);
-        
-        //     SDL_SetRenderDrawColor(renderer,255,255,255,255);
-        //     for(int step=0;step<400 && gen>10;step++){
-        //         SDL_RenderDrawPoint(renderer,ga.population[ind].movement_history[step].x,ga.population[ind].movement_history[step].y);
-        //         if(step%20==0){SDL_RenderPresent(renderer);}
-        //         std::cout<<"SP"<<step<<"turn"<<ind<<"x:"<<ga.population[ind].movement_history[step].x<<"y:"<<ga.population[ind].movement_history[step].y<<std::endl;
-        //     }
-    
-
-        // }
-        // SDL_Delay(500);
-        
+       if(gen%20==0){Rend::draw(ga.population,renderer,gen);}
     
     }
+    std::vector<foodchaser> best;
+    for (int i = 0; i < 40; ++i) {
+        best.push_back(ga.best);
+    }
+    Rend::draw(best,renderer,generations);
 
 
 

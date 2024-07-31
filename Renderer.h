@@ -9,15 +9,13 @@
 #include "individual.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_rect.h>
-#include<SDL2/SDL_image.h>
+#include <SDL2/SDL_image.h>
 
-template <typename T>
 class Rend{
     public:
-    std::vector<T>& population;
     
-    Rend(std::vector<T>& pop):population(pop){};
-    void draw(SDL_Renderer* renderer,int gen){
+    static void draw(std::vector<rightleft>& population,SDL_Renderer* renderer,int gen){
+        
          SDL_Surface* surface=nullptr;
         IMG_Init(IMG_INIT_PNG);
         SDL_Init(SDL_INIT_VIDEO);
@@ -103,9 +101,11 @@ class Rend{
         SDL_RenderClear(renderer);
         
         }
-    void draw2(SDL_Renderer* renderer,int gen,int health){
-        std::cout<<"Health"<<health<<std::endl;
-        int a = health;
+
+
+    static void draw(std::vector<foodchaser>& population ,SDL_Renderer* renderer,int gen){
+        int a = population[0].fitness_history[399];
+        std::cout<<"Health"<<a<<std::endl;
         SDL_Surface* surface=nullptr;
         IMG_Init(IMG_INIT_PNG);
         SDL_Init(SDL_INIT_VIDEO);
@@ -144,7 +144,7 @@ class Rend{
         //SDL_SetRenderDrawColor(renderer,0,255,255,255);
         //SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
         
-            for(int step=0;step<400 && gen>=1 && (gen%5==0 || gen==99);step++){
+            for(int step=0;step<400  ;step++){
                 //SDL_RenderDrawPoint(renderer,population[0].movement_history[step].x,population[0].movement_history[step].y);
                 rect.x = population[0].food_history[step].x;
                 rect.y = population[0].food_history[step].y;
@@ -156,10 +156,10 @@ class Rend{
                 }
                 //SDL_RenderDrawPoint(renderer,population[0].movement_history[step].x,population[0].movement_history[step].y);
                 SDL_RenderPresent(renderer);
-                SDL_Delay(50);
+                SDL_Delay(40);
                 SDL_SetRenderDrawColor(renderer,0,0,0,255);
                 SDL_RenderClear(renderer);
-                SDL_RenderCopy(renderer,ourjpg,NULL,NULL);
+                // SDL_RenderCopy(renderer,ourjpg,NULL,NULL);
                
                 //std::cout<<"SP"<<step<<"turn"<<ind<<"x:"<<population[ind].movement_history[step].x<<"y:"<<population[ind].movement_history[step].y<<std::endl;
             }

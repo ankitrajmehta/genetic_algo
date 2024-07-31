@@ -26,7 +26,7 @@ inline double tanh(double x){
     return (2/(1+exp(-2*x)))-1;
 }
 
-const int NUM_OF_CON =9;
+const int NUM_OF_CON =12;
 
 class NeuralNetwork {
 public:
