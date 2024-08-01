@@ -76,7 +76,7 @@ class Individual{
 
         void clean(){
             fitness = 0.0;
-            pos = position(random_int(),random_int());
+           // pos = position(random_int(),random_int());
             direction = 0;
             movement_history.clear();
             fitness_history.clear();
@@ -114,6 +114,14 @@ class Individual{
 
 class rightleft: public Individual{
     public:
+    void clean(){
+        pos = position(random_int(30,70),random_int(30,70));
+        fitness = 0.0;
+           // pos = position(random_int(),random_int());
+            direction = 0;
+            movement_history.clear();
+            fitness_history.clear();
+    }
 
 };
 
@@ -131,6 +139,7 @@ class foodchaser: public Individual{
 
         void clean(){
             Individual::clean();
+            pos = position(random_int(),random_int());
             food = position(random_int(0,80),random_int(0,80));
             food_dir = 0;//0->top-left,1->top,2->top-right,3->left,4->right,5->bottom-left,6->bottom,7->bottom-right
             food_history.clear();

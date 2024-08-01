@@ -6,7 +6,7 @@
 int main(int argc, char* args[]) {
     srand(static_cast<unsigned>(time(0)));
     NeuralNetwork nn(4, 4, 2);
-    int populationSize = 300;
+    int populationSize = 500;
     GeneticAlgorithm<rightleft> ga(populationSize, 0.15, nn);
     
     int generations = 50;
@@ -23,7 +23,7 @@ int main(int argc, char* args[]) {
         randomizeFoodPositions();
         ga.evolve(gen, step_per_gen);
         Rend<rightleft> kk(ga.population);
-       if(gen%20==0){kk.draw(renderer,gen);}
+       kk.draw(renderer,gen);
         //for(int ind=0;ind<1;ind+=30){
             //kk.draw(renderer);
         // SDL_SetRenderDrawColor(renderer,0,0,0,255);

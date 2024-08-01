@@ -24,8 +24,9 @@ class Rend{
         
         SDL_SetRenderDrawColor(renderer,0,255,255,255);
         //SDL_RenderClear(renderer);
-        for(int step=0;step<400;step++){    
+        for(int step=0;step<400 && gen%3==0;step++){    
         SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
+        SDL_Texture* ourjpg=nullptr;
         if(step>=0 && step<100){
                 SDL_SetRenderDrawColor(renderer,0,0,0,255);
                 
@@ -33,11 +34,13 @@ class Rend{
                 
                 surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/2nd.png");
                 
-                SDL_Texture* ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
+                ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
                 
                 SDL_RenderCopy(renderer,ourjpg,NULL,NULL);
                 
-                SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
+                
+                SDL_SetRenderDrawColor(renderer,255,0,255,255);
+                SDL_DestroyTexture(ourjpg);
                 }
 
                 else if(step>=100 && step<200){
@@ -47,11 +50,12 @@ class Rend{
                     
                     surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/1st.png");
                     
-                    SDL_Texture* ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
+                    ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
                     
                     SDL_RenderCopy(renderer,ourjpg,NULL,NULL);
                     
-                    SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
+                    SDL_SetRenderDrawColor(renderer,255,0,255,255);
+                    SDL_DestroyTexture(ourjpg);
                 }
                 else if(step>=200 && step<300){
                     SDL_SetRenderDrawColor(renderer,0,0,0,255);
@@ -60,11 +64,13 @@ class Rend{
                     
                     surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/2nd.png");
                     
-                    SDL_Texture* ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
+                    ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
                     
                     SDL_RenderCopy(renderer,ourjpg,NULL,NULL);
                     
-                    SDL_SetRenderDrawColor(renderer,random_int(0,255),random_int(0,255),random_int(0,255),255);
+                    
+                    SDL_SetRenderDrawColor(renderer,255,0,255,255);
+                    SDL_DestroyTexture(ourjpg);
                 }
                 else if(step>=300 && step<400){
                     SDL_SetRenderDrawColor(renderer,0,0,0,255);
@@ -73,21 +79,16 @@ class Rend{
                     
                     surface=IMG_Load("C:/Users/VICTUS/Desktop/genetic_algo264864/asset/3rd.png");
                     
-                    SDL_Texture* ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
+                    ourjpg=SDL_CreateTextureFromSurface(renderer,surface);
                     
                     SDL_RenderCopy(renderer,ourjpg,NULL,NULL);
                     
-                    SDL_SetRenderDrawColor(renderer,255,0,random_int(0,255),255);
-
+                    SDL_SetRenderDrawColor(renderer,255,0,255,255);
+                    SDL_DestroyTexture(ourjpg);
                 }
 
             for(int ind=0;ind<20;ind++){
-
-
-                
-
-
-                SDL_RenderDrawPoint(renderer,population[ind].movement_history[step].x,population[ind].movement_history[step].y);
+SDL_RenderDrawPoint(renderer,population[ind].movement_history[step].x,population[ind].movement_history[step].y);
                 
                 
                
@@ -97,7 +98,8 @@ class Rend{
             //SDL_RenderPresent(renderer);
          SDL_Delay(50);
         }
-        
+
+        SDL_FreeSurface(surface);
         SDL_SetRenderDrawColor(renderer,0,0,0,255);
         
         SDL_RenderClear(renderer);
