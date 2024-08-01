@@ -69,7 +69,7 @@ class Individual{
 
         Individual(){
             id++;
-            pos = position(random_int(),random_int());
+            //pos = position(random_int(),random_int());
             new_species = 0;
             
         }
@@ -122,6 +122,9 @@ class rightleft: public Individual{
             movement_history.clear();
             fitness_history.clear();
     }
+    rightleft(){
+        pos = position(random_int(30,70),random_int(30,70));
+    }
 
 };
 
@@ -134,6 +137,7 @@ class foodchaser: public Individual{
         foodchaser(){
             food = position(20,20);
             food_dir = 0;
+            pos = position(random_int(),random_int());
             
         }
 
