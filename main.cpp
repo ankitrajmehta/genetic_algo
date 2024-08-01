@@ -8,9 +8,9 @@ int main(int argc, char* args[]) {
     srand(static_cast<unsigned>(time(0)));
     NeuralNetwork nn(4, 4, 2);
     int populationSize = 500;
-    GeneticAlgorithm<foodchaser> ga(populationSize, 0.15, nn);
+    GeneticAlgorithm<rightleft> ga(populationSize, 0.15, nn);
     Rend kk;
-    int generations = 50;
+    int generations = 100;
     int step_per_gen = 400;
 
     SDL_Window* window=nullptr;
@@ -22,10 +22,10 @@ int main(int argc, char* args[]) {
     for (int gen = 0; gen < generations; ++gen) {
         randomizeFoodPositions();
         ga.evolve(gen, step_per_gen);
-       if(gen%1==0){kk.draw(ga.population,renderer,gen);}
+       if(gen%10==0){kk.draw(ga.population,renderer,gen);}
     
     }
-    std::vector<foodchaser> best;
+    std::vector<rightleft> best;
     for (int i = 0; i < 40; ++i) {
         best.push_back(ga.best);
     }

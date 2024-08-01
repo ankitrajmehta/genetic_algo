@@ -48,7 +48,7 @@ public:
         nn.setWeights(ind.weights);
 
         //For Food box:
-        std::vector<double> inputs = {(double)ind.pos.x- (double) ind.food.x+3, (double)ind.pos.y- (double) ind.food.y+3, (double)(age/400.0),1.0f};
+        std::vector<double> inputs = {(double)ind.pos.x- (double) ind.food.x+4.5, (double)ind.pos.y- (double) ind.food.y+4.5, (double)(age/400.0),1.0f};
         std::vector<double> outputs = nn.feedForward(inputs);
         ind.move(outputs);
         double fitness = 0.0;
